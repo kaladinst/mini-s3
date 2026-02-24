@@ -19,6 +19,22 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# virtual machine crash logs
 hs_err_pid*
 replay_pid*
+
+# --- Custom Mini-S3 Ignores ---
+.DS_Store
+.idea/
+*.iml
+.vscode/
+.env
+application-local.properties
+
+/uploads/
+/storage-nodes/
+
+# --- Build Tool Directories (Added!) ---
+target/
+build/
+.gradle/
