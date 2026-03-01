@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -87,5 +88,27 @@ public class FileMetadataService {
     public FileMetadata getmetadata(String storedFilename) {
         return fileMetadataRepository.findByStoredFilename(storedFilename)
                 .orElseThrow(() -> new RuntimeException("Metadata not found"));
+    }
+
+    public List<FileMetadata> listAllFiles() {
+        return fileMetadataRepository.findAll();
+    }
+
+    public void delete(String storedFilename) {
+        try {
+            FileMetadata metadata = getmetadata(storedFilename);
+
+            Path location = Paths.get(uploadDir)
+                    .resolve(storedFilename)
+                    .normalize()
+                    .toAbsolutePath();
+
+            Files.deleteIfExists(location);
+
+            fileMetadataRepository.delete(metadata);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to physically delete file from disk: " + storedFilename, e);
+        }
     }
 }

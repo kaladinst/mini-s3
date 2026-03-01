@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/files")
@@ -44,6 +46,24 @@ public class FileMetadataController {
                     .body(fileResource);
         } catch(RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FileMetadata>> listAllFiles() {
+        return ResponseEntity.ok(fileMetadataService.listAllFiles());
+    }
+
+    @DeleteMapping("/{storedFilename}")
+    public ResponseEntity<String> deleteFile(@PathVariable String storedFilename) {
+        try {
+            fileMetadataService.delete(storedFilename);
+
+            return ResponseEntity.noContent().build();
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to delete file: " + e.getMessage());
         }
     }
 
