@@ -5,6 +5,8 @@ import com.kaladinst.mini_s3.repository.FileMetadataRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,10 +60,32 @@ public class FileMetadataService {
         } else {
             throw new IllegalArgumentException("Cannot store empty file");
         }
+    }
+    public Resource loadAsResource(String storedFilename) {
+        try {
+            // 1. Look up the file in the database
+            FileMetadata metadata = fileMetadataRepository.findByStoredFilename(storedFilename).orElseThrow(() -> new RuntimeException("File not found in database"));
 
+            Path filePath = Paths.get(uploadDir)
+                    .resolve(storedFilename)
+                    .normalize()
+                    .toAbsolutePath();
 
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if(resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Failed to find the file");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Could not read file: " + storedFilename, e);
+        }
     }
 
-
-
+    public FileMetadata getmetadata(String storedFilename) {
+        return fileMetadataRepository.findByStoredFilename(storedFilename)
+                .orElseThrow(() -> new RuntimeException("Metadata not found"));
+    }
 }
