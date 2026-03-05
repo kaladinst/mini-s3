@@ -1,0 +1,131 @@
+/* App.css */
+:root {
+  --bg-color: #121212;
+  --panel-bg: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  --accent-color: #3b82f6; /* Modern Blue */
+  --accent-hover: #2563eb;
+  --success-color: #10b981; /* Modern Green */
+  --success-hover: #059669;
+  --border-color: #333333;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--border-color);
+  margin-bottom: 2rem;
+}
+
+/* Upload Form Styling */
+.upload-panel {
+  background: var(--panel-bg);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 30px;
+}
+
+.upload-form {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Fix the invisible file input text */
+input[type="file"] {
+  color: var(--text-primary);
+}
+
+input[type="file"]::file-selector-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  margin-right: 15px;
+  transition: background 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #2a2a2a;
+}
+
+/* Button Styling */
+.btn-primary {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* List Styling */
+.file-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.file-item {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-info p {
+  margin: 5px 0 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.btn-download {
+  background: var(--success-color);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-download:hover {
+  background: var(--success-hover);
+}
