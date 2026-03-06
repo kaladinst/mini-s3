@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './App.css';
+import './App.css'; 
 
 function App() {
   const [files, setFiles] = useState([]);
@@ -46,6 +46,24 @@ function App() {
       .finally(() => setIsUploading(false)); 
   };
 
+  const handleDelete = (storedFilename) => {
+    if (!window.confirm("Are you sure you want to delete this file?")) {
+      return; 
+    }
+
+    fetch(`http://localhost:8080/api/files/${storedFilename}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.status === 204 || response.ok) {
+          fetchFiles(); 
+        } else {
+          alert("Failed to delete the file.");
+        }
+      })
+      .catch((error) => console.error("Error deleting:", error));
+  };
+
   return (
     <div className="container">
       <h1>Mini-S3 Dashboard</h1>
@@ -83,12 +101,21 @@ function App() {
                 </p>
               </div>
               
-              <a 
-                href={`http://localhost:8080/api/files/download/${file.storedFilename}`} 
-                className="btn-download"
-              >
-                Download
-              </a>
+              <div className="action-buttons">
+                <a 
+                  href={`http://localhost:8080/api/files/download/${file.storedFilename}`} 
+                  className="btn-download"
+                >
+                  Download
+                </a>
+                
+                <button 
+                  onClick={() => handleDelete(file.storedFilename)} 
+                  className="btn-delete"
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>
